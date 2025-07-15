@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { MdShoppingCartCheckout } from 'react-icons/md';
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -16,19 +17,34 @@ const Cart = () => {
     0
   );
 
+  // 🌗 Apply saved theme on mount
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark' || !savedTheme) {
+      document.body.classList.add('dark');
+    } else {
+      document.body.classList.remove('dark');
+    }
+  }, []);
+
   return (
-    <div className="p-6 text-white">
-      <h2 className="text-3xl font-bold mb-6">🛒 Your Cart</h2>
+    <div className="px-4 sm:px-6 lg:px-8 py-6 text-[#212529] dark:text-white">
+      {/* 🛒 Cart Header */}
+      <h2 className="text-2xl sm:text-3xl font-bold mb-6 flex items-center gap-2">
+        <MdShoppingCartCheckout className="text-[#FF914D] text-2xl sm:text-3xl" />
+        Your Cart
+      </h2>
 
       {cartItems.length === 0 ? (
-        <p>Your cart is empty.</p>
+        <p className="text-center text-gray-400">Your cart is empty.</p>
       ) : (
         <div className="space-y-6">
           {cartItems.map((item) => (
             <div
               key={item.id}
-              className="flex items-center justify-between bg-[#2a2a2a] p-4 rounded-lg shadow"
+              className="flex flex-col sm:flex-row sm:items-center sm:justify-between bg-white dark:bg-[#2a2a2a] text-[#212529] dark:text-white p-4 rounded-lg shadow gap-4"
             >
+              {/* 🖼️ Item Info */}
               <div className="flex items-center gap-4">
                 <img
                   src={item.image}
@@ -36,13 +52,14 @@ const Cart = () => {
                   className="w-20 h-20 object-cover rounded"
                 />
                 <div>
-                  <h3 className="text-xl font-semibold">{item.name}</h3>
-                  <p className="text-sm text-gray-400">{item.category}</p>
-                  <p className="text-orange-400 font-bold mt-1">₹{item.price}</p>
+                  <h3 className="text-lg sm:text-xl font-semibold">{item.name}</h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{item.category}</p>
+                  <p className="text-orange-500 font-bold mt-1">₹{item.price}</p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-4">
+              {/* ➕➖ Quantity + ❌ Remove */}
+              <div className="flex flex-wrap items-center justify-between sm:justify-end gap-4 sm:gap-6">
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => decreaseQuantity(item.id)}
@@ -50,7 +67,7 @@ const Cart = () => {
                   >
                     -
                   </button>
-                  <span>{item.quantity}</span>
+                  <span className="px-2 font-semibold">{item.quantity}</span>
                   <button
                     onClick={() => increaseQuantity(item.id)}
                     className="bg-[#FF914D] px-2 py-1 rounded text-white hover:bg-orange-600"
@@ -63,19 +80,21 @@ const Cart = () => {
                   onClick={() => removeFromCart(item.id)}
                   className="text-red-500 hover:text-red-700 text-sm"
                 >
-                  Remove
+                  <span className="hidden sm:inline">Remove</span>
+                  <span className="sm:hidden">❌</span>
                 </button>
               </div>
             </div>
           ))}
 
-          <div className="text-right text-lg font-bold mt-6">
+          {/* 💰 Total & Checkout */}
+          <div className="text-right text-lg font-bold mt-6 text-[#212529] dark:text-white">
             Total: ₹{totalPrice}
           </div>
 
-          <div className="text-right">
+          <div className="flex justify-end">
             <button
-              className="mt-4 bg-[#FF914D] text-white px-6 py-2 rounded hover:bg-orange-600"
+              className="mt-4 bg-[#FF914D] text-white px-6 py-2 rounded hover:bg-orange-600 text-sm sm:text-base"
               onClick={() => navigate('/checkout')}
             >
               Go to Checkout

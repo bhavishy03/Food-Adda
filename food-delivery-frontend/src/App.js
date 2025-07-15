@@ -16,6 +16,18 @@ import Profile from './pages/Profile';
 import PrivateRoute from './components/PrivateRoute';
 import { CartProvider, useCart } from './context/CartContext';
 import './index.css';
+import Notifications from './pages/Notifications';
+import EditProfile from './pages/EditProfile';
+import Orders from './pages/OrderHistory';
+import Addresses from './pages/Addresses';
+import Payments from './pages/Payments';
+import OrderLiveTrack from './pages/TrackOrder';
+import TrackOrder from './pages/TrackOrder';
+import ForgotPassword from "./pages/ForgotPassword";
+import DishDetails from './pages/DishDetails';
+
+
+
 
 // ✅ Navbar wrapper to use context inside App
 const AppContent = () => {
@@ -24,7 +36,7 @@ const AppContent = () => {
   return (
     <>
       <Navbar cartItemCount={getItemCount()} />
-      <div className="min-h-screen bg-[#1e1e1e] text-white">
+      <div className="min-h-screen bg-white dark:bg-[#1e1e1e] text-black dark:text-white">
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/menu" element={<Menu />} />
@@ -36,7 +48,18 @@ const AppContent = () => {
           <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/userdashboard" element={<ProtectedRoute><UserDashboard /></ProtectedRoute>} />
-        </Routes>
+          <Route path="/notifications" element={<Notifications />} />
+          <Route path="/edit-profile" element={<EditProfile />} />
+          <Route path="/orders" element={<Orders userId={JSON.parse(localStorage.getItem('user'))?._id} />} />
+          <Route path="/addresses" element={<Addresses />} />
+          <Route path="/payments" element={<Payments />} />
+          <Route path="/live-track" element={<OrderLiveTrack />} />
+          <Route path="/track-order/:id" element={<TrackOrder />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/dish/:id" element={<DishDetails />} />
+
+
+         </Routes>
       </div>
     </>
   );

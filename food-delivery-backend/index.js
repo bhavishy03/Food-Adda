@@ -3,12 +3,15 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
+const addressRoutes = require('./routes/addressRoutes');
+
 require("dotenv").config();
 
 // ✅ Import routes
 const userRoutes = require("./routes/userRoutes");
 const foodRoutes = require("./routes/foodRoutes");
 const authRoutes = require("./routes/authRoutes");
+const orderRoutes = require("./routes/orderRoutes");
 
 const app = express();
 const PORT = 5000;
@@ -23,6 +26,8 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads"))); // ✅ sta
 app.use("/api/foods", foodRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes); /// ✅ profile upload
+app.use('/api/orders', orderRoutes);
+app.use('/api/addresses', addressRoutes);
 
 // ✅ MongoDB Connection
 mongoose
