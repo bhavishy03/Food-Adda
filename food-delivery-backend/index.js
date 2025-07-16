@@ -30,11 +30,15 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/addresses', addressRoutes);
 
 // ✅ MongoDB Connection
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log("✅ MongoDB Connected"))
-  .catch(err => console.error("❌ MongoDB Error:", err));
-
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-});
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log("✅ MongoDB Connected");
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error("❌ MongoDB Error:", err);
+    process.exit(1); // stop server if DB fails
+  });
+console.log(`🚀 Server running on port ${PORT} in ${process.env.NODE_ENV} mode`);
