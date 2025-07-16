@@ -1,5 +1,5 @@
 // src/pages/Homepage.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import foodData from '../data/foodData';
 import FoodItem from '../components/FoodItem';
@@ -16,17 +16,45 @@ import Slider from 'react-slick';
 import FloatingCartButton from '../components/FloatingCartButton';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import axios from '../utils/axios';
 
 const Homepage = ({ onAddToCart }) => {
   const { addToCart } = useCart();
   const navigate = useNavigate();
 
-  // Slider images (public/posters)
+  const [foods, setFoods] = useState(foodData); // fallback foodData
+  const [activeCategory, setActiveCategory] = useState('All');
+
+  useEffect(() => {
+    axios
+      .get('/foods')
+      .then((res) => {
+        if (res.data.length > 0) {
+          setFoods(res.data);
+        }
+      })
+      .catch((err) => {
+        console.error('Foods fetch error:', err);
+      });
+  }, []);
+
+  const categories = [
+    'All',
+    ...Array.from(new Set(foods.map((item) => item.category)))
+  ];
+
+  const filteredItems = foods.filter((item) =>
+    activeCategory === 'All' ? true : item.category === activeCategory
+  );
+
+  const featuredItems = filteredItems.slice(0, 10); // showing 10 items
+
   const sliderImages = [
     { src: '/posters/burger.jpg' },
     { src: '/posters/paneer.jpg' },
     { src: '/posters/dessert.jpg' }
   ];
+
   const sliderSettings = {
     dots: true,
     infinite: true,
@@ -39,19 +67,9 @@ const Homepage = ({ onAddToCart }) => {
     arrows: false
   };
 
-  // Category filters (ensure your foodData items have .category field)
-  const categories = ['All', 'Biryani', 'Pizza', 'Desserts', 'Vegan'];
-  const [activeCategory, setActiveCategory] = useState('All');
-  const filteredItems = foodData.filter(item =>
-    activeCategory === 'All' ? true : item.category === activeCategory
-  );
-
-  // Show up to 8 items after filtering
-  const featuredItems = filteredItems.slice(0, 8);
-
   return (
     <div className="relative min-h-screen bg-white dark:bg-[#1e1e1e] text-[#212529] dark:text-white">
-      {/* 🎞️ Poster Slider */}
+      {/* Poster Slider */}
       <Slider {...sliderSettings} className="mb-10 px-4">
         {sliderImages.map((slide, idx) => (
           <div key={idx} className="relative">
@@ -64,25 +82,24 @@ const Homepage = ({ onAddToCart }) => {
         ))}
       </Slider>
 
-      {/* 🧭 Category Quick Filters */}
+      {/* Category Filters */}
       <div className="flex gap-3 overflow-x-auto px-4 mb-6">
-        {categories.map(cat => (
+        {categories.map((cat) => (
           <button
             key={cat}
             onClick={() => setActiveCategory(cat)}
-            className={`flex-shrink-0 px-4 py-1 rounded-full text-sm font-medium transition
-              ${
-                activeCategory === cat
-                  ? 'bg-[#FF914D] text-white'
-                  : 'bg-gray-200 dark:bg-[#2a2a2a] text-gray-700 dark:text-gray-300'
-              } hover:bg-[#FF914D] hover:text-white`}
+            className={`flex-shrink-0 px-4 py-1 rounded-full text-sm font-medium transition ${
+              activeCategory === cat
+                ? 'bg-[#FF914D] text-white'
+                : 'bg-gray-200 dark:bg-[#2a2a2a] text-gray-700 dark:text-gray-300'
+            } hover:bg-[#FF914D] hover:text-white`}
           >
             {cat}
           </button>
         ))}
       </div>
 
-      {/* 🍽️ Hero */}
+      {/* Hero Section */}
       <section className="text-center mb-16 px-4">
         <motion.h1
           className="text-5xl font-bold mb-4 text-[#FF914D]"
@@ -110,7 +127,7 @@ const Homepage = ({ onAddToCart }) => {
         </motion.button>
       </section>
 
-      {/* 🎉 Rewards Preview */}
+      {/* Rewards Preview */}
       <div className="max-w-md mx-auto mb-12 px-4">
         <div className="bg-gradient-to-r from-orange-400 to-orange-600 p-4 rounded-xl text-white shadow-md text-center">
           🎉 You’ve earned <strong>₹92</strong> in rewards!
@@ -123,7 +140,7 @@ const Homepage = ({ onAddToCart }) => {
         </div>
       </div>
 
-      {/* 🔥 Featured Items */}
+      {/* Featured Items */}
       <section className="mb-20 px-4">
         <motion.h2
           className="text-3xl font-bold mb-8 text-[#FF914D] flex items-center gap-2"
@@ -134,20 +151,19 @@ const Homepage = ({ onAddToCart }) => {
           <FaStar /> Popular Dishes
         </motion.h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
-          {featuredItems.map(item => (
+          {featuredItems.map((item) => (
             <motion.div
-              key={item.id}
+              key={item._id || item.id}
               whileHover={{ scale: 1.03 }}
               className="transition-transform duration-300"
             >
-             <FoodItem item={item} onAdd={onAddToCart || addToCart} />
-
+              <FoodItem item={item} onAdd={onAddToCart || addToCart} />
             </motion.div>
           ))}
         </div>
       </section>
 
-      {/* 💡 Services */}
+      {/* Services */}
       <section className="mb-20 text-center px-4">
         <h2 className="text-2xl font-bold text-[#FF914D] mb-8">
           💡 Why Choose Us
@@ -177,7 +193,7 @@ const Homepage = ({ onAddToCart }) => {
         </div>
       </section>
 
-      {/* 💬 Testimonials Preview */}
+      {/* Testimonials */}
       <section className="mb-20 px-4">
         <h2 className="text-2xl font-bold text-[#FF914D] mb-6 text-center">
           💬 What Our Customers Say
@@ -195,14 +211,12 @@ const Homepage = ({ onAddToCart }) => {
               “The app is smooth and the UI makes ordering so fun. Loyalty points
               system is super cool!”
             </p>
-            <p className="mt-2 font-semibold text-[#FF914D]">
-              — Priya, Jabalpur
-            </p>
+            <p className="mt-2 font-semibold text-[#FF914D]">— Priya, Jabalpur</p>
           </div>
         </div>
       </section>
 
-      {/* 📍 Delivery Banner CTA */}
+      {/* Delivery Banner */}
       <section className="text-center bg-[#FF914D] text-white py-10 rounded-xl shadow mb-20 px-4">
         <h2 className="text-2xl font-bold mb-2">Track Your Order Live</h2>
         <p className="text-sm mb-4">
@@ -216,7 +230,7 @@ const Homepage = ({ onAddToCart }) => {
         </button>
       </section>
 
-      {/* 🛒 Floating Cart Shortcut */}
+      {/* Floating Cart */}
       <FloatingCartButton />
     </div>
   );

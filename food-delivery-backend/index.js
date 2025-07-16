@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
 const addressRoutes = require('./routes/addressRoutes');
+const dishRoutes = require("./routes/dishRoutes");
 
 require("dotenv").config();
 
@@ -42,3 +43,15 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
     process.exit(1); // stop server if DB fails
   });
 console.log(`🚀 Server running on port ${PORT} in ${process.env.NODE_ENV} mode`);
+
+app.use("/api/dishes", dishRoutes);
+// ✅ MongoDB Connection
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("✅ MongoDB Connected"))
+  .catch(err => console.error("❌ MongoDB Error:", err));
+
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
+
