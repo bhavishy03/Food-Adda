@@ -22,6 +22,19 @@ const Homepage = ({ onAddToCart }) => {
   const { addToCart } = useCart();
   const navigate = useNavigate();
 
+  const [foods, setFoods] = useState([]);
+
+useEffect(() => {
+  axios.get("/foods")
+    .then((res) => {
+      setFoods(res.data);
+      console.log("Fetched foods:", res.data);
+    })
+    .catch((err) => {
+      console.error("Foods fetch error:", err);
+    });
+}, []);
+
   // Slider images (public/posters)
   const sliderImages = [
     { src: '/posters/burger.jpg' },
