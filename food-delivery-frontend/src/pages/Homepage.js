@@ -16,6 +16,7 @@ import Slider from 'react-slick';
 import FloatingCartButton from '../components/FloatingCartButton';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import axios from "../utils/axios";
 
 const Homepage = ({ onAddToCart }) => {
   const { addToCart } = useCart();
