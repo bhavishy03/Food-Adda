@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
 const addressRoutes = require('./routes/addressRoutes');
+const dishRoutes = require("./routes/dishRoutes");
 
 require("dotenv").config();
 
@@ -28,7 +29,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes); /// ✅ profile upload
 app.use('/api/orders', orderRoutes);
 app.use('/api/addresses', addressRoutes);
-
+app.use("/api/dishes", dishRoutes);
 // ✅ MongoDB Connection
 mongoose
   .connect(process.env.MONGO_URI)
