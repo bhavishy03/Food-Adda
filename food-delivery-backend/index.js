@@ -4,7 +4,6 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
 const addressRoutes = require('./routes/addressRoutes');
-const dishRoutes = require("./routes/dishRoutes");
 
 require("dotenv").config();
 
