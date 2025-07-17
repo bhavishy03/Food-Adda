@@ -19,11 +19,11 @@ const Signup = () => {
     setMessage("");
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/signup", {
-        name: formData.name.trim(),
-        email: formData.email.trim().toLowerCase(),
-        password: formData.password,
-      });
+     const res = await axios.post("https://food-adda-backend.onrender.com/api/auth/signup", {
+  name: formData.name.trim(),
+  email: formData.email.trim().toLowerCase(),
+  password: formData.password,
+});
 
       setMessage(res.data.message || "Signup successful!");
       setTimeout(() => navigate("/login"), 2000);
