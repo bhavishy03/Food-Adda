@@ -19,11 +19,11 @@ const Login = () => {
     setError("");
     setMessage("");
 
-    try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
-        email: formData.email.trim().toLowerCase(),
-        password: formData.password,
-      });
+   try {
+  const res = await axios.post("https://food-adda-backend.onrender.com/api/auth/login", {
+    email: formData.email.trim().toLowerCase(),
+    password: formData.password,
+  });
 
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
