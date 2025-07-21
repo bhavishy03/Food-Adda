@@ -17,7 +17,7 @@ const ForgotPassword = () => {
     setMsg("");
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/forgot-password", { email });
+      const res = await axios.post("https://food-adda-backend.onrender.com/api/auth/forgot-password", { email });
       setMsg(res.data.message || "Reset link sent!");
     } catch (err) {
       console.error(err);

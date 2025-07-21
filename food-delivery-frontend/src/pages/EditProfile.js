@@ -36,7 +36,7 @@ const EditProfileModal = ({ user, isOpen, onClose, onProfileUpdated }) => {
     if (file) data.append('profilePicture', file);
 
     try {
-      const res = await axios.put(`http://localhost:5000/api/users/${user.id}`, data);
+      const res = await axios.put(`https://food-adda-backend.onrender.com/api/users/${user.id}`, data);
       setMessage('✅ Profile updated!');
       localStorage.setItem('user', JSON.stringify(res.data));
       onProfileUpdated(); // refresh main profile

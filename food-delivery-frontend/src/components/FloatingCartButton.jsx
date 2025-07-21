@@ -1,27 +1,29 @@
-// src/components/FloatingCartButton.jsx
-import React from 'react';
-import { FaShoppingCart } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
-import { useCart } from '../context/CartContext';
+"use client"
+
+import { ShoppingCart } from "lucide-react"
+import { useNavigate } from "react-router-dom"
+import { useCart } from "../context/CartContext"
 
 const FloatingCartButton = () => {
-  const navigate = useNavigate();
-  const { cartItems } = useCart();
+  const navigate = useNavigate()
+  const { getItemCount } = useCart()
+  const itemCount = getItemCount()
 
   return (
-    <button
-      onClick={() => navigate('/cart')}
-      className="fixed bottom-6 right-6 bg-[#FF914D] hover:bg-orange-600 text-white p-4 rounded-full shadow-lg z-50 flex items-center gap-2"
-      title="Go to Cart"
-    >
-      <FaShoppingCart className="text-xl" />
-      {cartItems.length > 0 && (
-        <span className="bg-white text-[#FF914D] text-xs font-bold px-2 py-0.5 rounded-full">
-          {cartItems.length}
-        </span>
-      )}
-    </button>
-  );
-};
+    <div className="fixed bottom-6 right-6 z-50">
+      <button
+        onClick={() => navigate("/cart")}
+        className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white rounded-full w-16 h-16 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 flex items-center justify-center relative"
+      >
+        <ShoppingCart className="w-6 h-6" />
+        {itemCount > 0 && (
+          <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center font-bold">
+            {itemCount}
+          </span>
+        )}
+      </button>
+    </div>
+  )
+}
 
-export default FloatingCartButton;
+export default FloatingCartButton

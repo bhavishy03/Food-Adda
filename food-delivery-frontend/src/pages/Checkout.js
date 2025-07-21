@@ -87,7 +87,7 @@ const Checkout = () => {
     };
 
     try {
-      const res = await axios.post('http://localhost:5000/api/orders', payload);
+      const res = await axios.post('https://food-adda-backend.onrender.com/api/orders', payload);
       clearCart();
 
       // Merge backend order with local items so we can show images/details

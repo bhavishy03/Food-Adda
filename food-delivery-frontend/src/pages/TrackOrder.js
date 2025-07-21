@@ -22,7 +22,7 @@ const TrackOrder = () => {
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/orders/${id}`);
+        const res = await axios.get(`https://food-adda-backend.onrender.com/api/orders/${id}`);
         setOrder(res.data.order);
       } catch (err) {
         console.error('❌ Error fetching order:', err);

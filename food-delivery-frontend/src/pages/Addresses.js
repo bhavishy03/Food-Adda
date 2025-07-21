@@ -16,7 +16,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
-const API_BASE = 'http://localhost:5000/api/addresses';
+const API_BASE = 'https://food-adda-backend.onrender.com/api/addresses';
 
 const Addresses = () => {
   const navigate = useNavigate();

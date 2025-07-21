@@ -73,10 +73,11 @@ const Profile = () => {
       </p>
     );
   }
+  const baseURL = process.env.REACT_APP_API_URL;
 
   const profileSrc = user?.profilePicture
-    ? `http://localhost:5000/uploads/${user.profilePicture}`
-    : null;
+  ? `${baseURL.replace("/api", "")}/uploads/${user.profilePicture}`
+  : "/default-profile.png";
 
   return (
     <div className="max-w-md mx-auto px-4 py-6 text-[#212529] dark:text-white">
