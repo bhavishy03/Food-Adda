@@ -39,7 +39,7 @@ const Homepage = ({ onAddToCart }) => {
         console.log("Loading foods...")
 
         // Try to fetch from API first
-        const response = await axios.get("/foods")
+        const response = await axios.get("/food")
 
         if (response.data && response.data.length > 0) {
           console.log("API Data loaded:", response.data.length, "items")
@@ -85,6 +85,8 @@ const Homepage = ({ onAddToCart }) => {
     }, 4000)
     return () => clearInterval(timer)
   }, [sliderImages.length])
+
+
 
   const categories = foods.length > 0 ? ["All", ...Array.from(new Set(foods.map((item) => item.category)))] : ["All"]
 
@@ -413,7 +415,7 @@ const Homepage = ({ onAddToCart }) => {
                         e.target.src = categoryImages[item.category] || categoryImages.Pizza
                       }}
                     />
-                    <div className="absolute top-3 right-3">
+                    <div className="absolute top- right-3">
                       <button
                         className="rounded-full w-10 h-10 p-0 bg-white/90 hover:bg-white shadow-lg flex items-center justify-center hover:scale-110 transition-all duration-200"
                         onClick={(e) => handleHeartClick(e, item)}
