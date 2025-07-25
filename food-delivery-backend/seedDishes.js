@@ -7,7 +7,7 @@ const MONGO_URI = process.env.MONGO_URI;
 mongoose.connect(MONGO_URI)
   .then(async () => {
     console.log("✅ Connected to MongoDB");
-
+  
     const sampleDishes = [
       { name: "Paneer Tikka", price: 180, category: "Indian", image: "/images/paneer.jpg" },
       { name: "Veg Biryani", price: 160, category: "Biryani", image: "/images/biryani.jpg" },
