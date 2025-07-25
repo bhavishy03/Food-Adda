@@ -28,37 +28,27 @@ const Homepage = ({ onAddToCart }) => {
   const { addToCart } = useCart()
   const navigate = useNavigate()
   const [foods, setFoods] = useState([]) // Start with empty array
-  const [loading, setLoading] = useState(true)
   const [activeCategory, setActiveCategory] = useState("All")
   const [currentSlide, setCurrentSlide] = useState(0)
 
-  useEffect(() => {
-    const loadFoods = async () => {
-      try {
-        setLoading(true)
-        console.log("Loading foods...")
+ useEffect(() => {
+  const loadFoods = async () => {
+    try {
+      const response = await axios.get("/food");
 
-        // Try to fetch from API first
-        const response = await axios.get("/food")
-
-        if (response.data && response.data.length > 0) {
-          console.log("API Data loaded:", response.data.length, "items")
-          setFoods(response.data)
-        } else {
-          throw new Error("No API data")
-        }
-      } catch (err) {
-        console.error("Foods fetch error:", err)
-        console.log("Using fallback foodData:", foodData.length, "items")
-        // Use local foodData as fallback
-        setFoods(foodData)
-      } finally {
-        setLoading(false)
+      if (response.data && response.data.length > 0) {
+        setFoods(response.data);
+      } else {
+        throw new Error("No API data");
       }
+    } catch (err) {
+      console.error("Foods fetch error:", err);
+      setFoods(foodData); // fallback data
     }
+  };
 
-    loadFoods()
-  }, [])
+  loadFoods();
+}, []);
 
   const sliderImages = [
     {
@@ -120,17 +110,7 @@ const Homepage = ({ onAddToCart }) => {
     console.log("Added to favorites:", item.name)
   }
 
-  // Loading state
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-red-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600 text-lg">Loading delicious food...</p>
-        </div>
-      </div>
-    )
-  }
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-red-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
