@@ -27,7 +27,6 @@ Welcome to **Food-Adda**, a full-stack food delivery website built as part of my
 3. Start the backend server
 4. Start the frontend app
 
-## 🌐 Live Demo
 (Deployment link if available)
 
 ---
